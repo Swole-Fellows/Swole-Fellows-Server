@@ -23,10 +23,10 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => console.log('Mongoose connected'));
 
-app.post('/food', handlePostFood);
-app.get('/food ', handleGetFood );
-app.get('/', handleGetFood);
-app.put('/', handleUpdateFood);
-app.delete('/', handleDeleteFood);
+app.post('/food',);
+app.get('/food',);
+app.get('/', );
+app.put('/', );
+app.delete('/', );
 
 app.listen(PORT, () => console.log(`Listening on PORT ${PORT}`));

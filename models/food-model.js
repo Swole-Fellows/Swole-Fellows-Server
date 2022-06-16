@@ -9,7 +9,8 @@ const foodSchema = new mongoose.Schema({
   protein: Number,
   fats: Number,
   calories: Number,
-  servingSize: String
+  servingSize: String,
+  mass: Number
 });
 const FoodModel = mongoose.model('food', foodSchema);
 
