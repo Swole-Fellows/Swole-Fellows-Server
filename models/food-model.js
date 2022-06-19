@@ -8,7 +8,8 @@ const foodSchema = new mongoose.Schema({
   fats: Number,
   calories: Number,
   servingSize: Number,
-  image: String
+  image: String,
+  amountConsumed: Number
 });
 const FoodModel = mongoose.model('food', foodSchema);
 

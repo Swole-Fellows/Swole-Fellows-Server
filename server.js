@@ -10,7 +10,7 @@ const RecipeHandlers = require('./handlers');
 
 
 const PORT = process.env.PORT || 3001;
-const DB_URL = process.env.DB_URL ;
+const DB_URL = process.env.DB_URL;
 
 const app = express();
 
@@ -35,11 +35,11 @@ async function getFood(req) {
   try {
     const response = await axios.get(url);
     // console.log(response.data.parsed);
-    console.log(response.data.parsed.food);
-    console.log(response.data.hints.food);
-    
-    // const foodData = new Food(value);
-    return Promise.resolve(response.data);
+    // console.log(response.data.parsed.food);
+    // console.log(response.data.hints.food);
+
+    const foodData = new Food(response.data);
+    return Promise.resolve(foodData);
   } catch (error) {
     console.error(error);
   }
@@ -48,14 +48,17 @@ async function getFood(req) {
 class Food {
 
   constructor(value) {
-    // this.name = req.query.search;
-    this.name = value.food.label;
-    this.calories= value.calories;
-    this.servingSize= value.totalWeight;
-    this.fats= value.totalNutrients.FAT.quantity;
-    this.carbs= value.totalNutrients.CHOCDF.quantity;
-    this.protein= value.totalNutrients.PROCNT.quantity;
-    // this.image = value;
+    // console.log('food constructor', value.hints[0].food.label);
+    this.foodName = value.hints[0].food.label;
+    console.log(value.hints[0].measures.find(obj => obj.label === 'Serving'));
+    this.calories = value.hints[0].food.nutrients.ENERC_KCAL;
+    this.servingSize = value.totalWeight;
+    this.fats = value.hints[0].food.nutrients.FAT;
+    this.carbs = value.hints[0].food.nutrients.CHOCDF;
+    this.protein = value.hints[0].food.nutrients.PROCNT;
+    this.servingSize = value.hints[0].measures.find(obj => obj.label === 'Serving').weight;
+    this.image = value.hints[0].food.image;
+    this.amountConsumed = 0;
   }
 }
 
@@ -63,11 +66,11 @@ app.get('/food', (req, res) => getFood(req).then(value => res.status(200).send(v
 
 // MongoDB
 
-app.post('/food', FoodHandlers.create);
-app.get('/food ', FoodHandlers.getAll);
-app.get('/food/:id', FoodHandlers.getOne);
-app.put('/food', FoodHandlers.update);
-app.delete('/food/:id', FoodHandlers.delete);
+app.post('/foodDB', FoodHandlers.create);
+app.get('/foodDB', FoodHandlers.getAll);
+app.get('/foodDB/:id', FoodHandlers.getOne);
+app.put('/foodDB/:id', FoodHandlers.update);
+app.delete('/foodDB/:id', FoodHandlers.delete);
 
 app.post('/recipes', RecipeHandlers.create);
 app.get('/recipes ', RecipeHandlers.getOne);
