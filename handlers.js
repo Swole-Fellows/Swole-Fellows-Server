@@ -13,7 +13,6 @@ FoodHandlers.create = async (request, response, next) => {
     response.status(200).json(data);
   } catch (error) { next(error.messeage); }
   console.log('creating a Food...');
-  // response.status(200).json('creating a Food...');
 };
 
 FoodHandlers.getAll = async (request, response) => {
@@ -27,7 +26,6 @@ FoodHandlers.getOne = async (request, response) => {
   const food = await FoodModel.find({ _id: id });
   response.status(200).json(food);
   console.log('getting a single Food...');
-  // response.send('getting a single Food...');
 };
 
 
@@ -37,7 +35,7 @@ FoodHandlers.update = async (request, response) => {
     const food = await FoodModel.findOne({ _id: id });
     if (!food) response.status(400).send('unable to update food');
     else {
-      const updatedFood = await FoodModel.findByIdAndUpdate(id, {...request.body}, { new: true, overwrite: true });
+      const updatedFood = await FoodModel.findByIdAndUpdate(id, {...request.body}, { new: true, overwrite: false });
       response.status(200).send(updatedFood);
     }
   } catch (e) {

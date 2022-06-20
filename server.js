@@ -34,9 +34,6 @@ async function getFood(req) {
   const url = `https://api.edamam.com/api/food-database/v2/parser?app_id=a0001873&app_key=25bea95fd0ab0ce3e9788372c104698a&nutrition-type=logging&ingr=${search}`;
   try {
     const response = await axios.get(url);
-    // console.log(response.data.parsed);
-    // console.log(response.data.parsed.food);
-    // console.log(response.data.hints.food);
 
     const foodData = new Food(response.data);
     return Promise.resolve(foodData);
@@ -48,7 +45,6 @@ async function getFood(req) {
 class Food {
 
   constructor(value) {
-    // console.log('food constructor', value.hints[0].food.label);
     this.foodName = value.hints[0].food.label;
     console.log(value.hints[0].measures.find(obj => obj.label === 'Serving'));
     this.calories = value.hints[0].food.nutrients.ENERC_KCAL;
