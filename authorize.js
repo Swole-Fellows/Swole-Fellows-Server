@@ -13,8 +13,6 @@ function verifyUser(request, response, next) {
   try {
     const token = request.headers.authorization.split(' ')[1];
 
-    console.log('Token: ', token);
-
     jwt.verify(token, getKey, {}, valid);
   } catch (error) {
     next('Not Authorized');

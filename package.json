@@ -15,6 +15,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.1.4",
     "mongoose": "^6.3.8",
+    "nodemon": "^2.0.16",
     "react": "^18.0.0",
     "react-bootstrap": "^2.4.0",
     "react-cookie": "4.0.3",
