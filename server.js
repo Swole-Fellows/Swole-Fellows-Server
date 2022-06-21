@@ -7,7 +7,7 @@ const axios = require('axios');
 const verifyUser = require('./authorize.js');
 const FoodHandlers = require('./handlers');
 const RecipeHandlers = require('./handlers');
-
+const ProfileHandlers = require('./profileHandlers');
 
 const PORT = process.env.PORT || 3001;
 const DB_URL = process.env.DB_URL;
@@ -46,7 +46,6 @@ class Food {
 
   constructor(value) {
     this.foodName = value.hints[0].food.label;
-    console.log(value.hints[0].measures.find(obj => obj.label === 'Serving'));
     this.calories = value.hints[0].food.nutrients.ENERC_KCAL;
     this.servingSize = value.totalWeight;
     this.fats = value.hints[0].food.nutrients.FAT;
@@ -58,6 +57,16 @@ class Food {
   }
 }
 
+// class Profile {
+//   constructor(value){
+//     this.targetCal= {type: Number};
+//     this.currentWeight= {type: Number};
+//     this.dateOfBirth= {type: String};
+//     this.sex= {type: String};
+//     this.email= {type: String};
+//   }
+// }
+
 app.get('/food', (req, res) => getFood(req).then(value => res.status(200).send(value)));
 
 // MongoDB
@@ -68,10 +77,15 @@ app.get('/foodDB/:id', FoodHandlers.getOne);
 app.put('/foodDB/:id', FoodHandlers.update);
 app.delete('/foodDB/:id', FoodHandlers.delete);
 
-app.post('/recipes', RecipeHandlers.create);
-app.get('/recipes ', RecipeHandlers.getOne);
-app.get('/recipes', RecipeHandlers.getAll);
-app.put('/recipes', RecipeHandlers.update);
-app.delete('/recipes', RecipeHandlers.delete);
+app.post('/profile', ProfileHandlers.create);
+app.get('/profile/:id', ProfileHandlers.getOne);
+app.put('/profile/:id', ProfileHandlers.update);
+app.delete('/profile/:id', ProfileHandlers.delete);
+
+// app.post('/recipes', RecipeHandlers.create);
+// app.get('/recipes ', RecipeHandlers.getOne);
+// app.get('/recipes', RecipeHandlers.getAll);
+// app.put('/recipes', RecipeHandlers.update);
+// app.delete('/recipes', RecipeHandlers.delete);
 
 app.listen(PORT, () => console.log(`Listening on PORT ${PORT}`));

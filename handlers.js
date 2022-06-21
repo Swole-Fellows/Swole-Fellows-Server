@@ -1,41 +1,45 @@
 'use strict';
-const RecipeHandlers = {};
+// const RecipeHandlers = {};
 const FoodHandlers = {};
 const FoodModel = require('./models/food-model');
 // const RecipeModel = require('./models/recipe-model');
 
 
 FoodHandlers.create = async (request, response, next) => {
+  console.log(request);
+  console.log(response);
+
   try {
     const data = request.body;
-    const food = new FoodModel(data);
+    console.log(data);
+    const food = await FoodModel.create({...data, email: request.user.email});
     await food.save();
-    response.status(200).json(data);
-  } catch (error) { next(error.messeage); }
+    response.status(200).json(food);
+  } catch (error) { next(error.message); }
   console.log('creating a Food...');
 };
 
 FoodHandlers.getAll = async (request, response) => {
-  const food = await FoodModel.find({});
+  console.log(request.user.email);
+  const food = await FoodModel.find({email: request.user.email});
   response.status(200).json(food);
   console.log('getting all the Foods...');
 };
 
 FoodHandlers.getOne = async (request, response) => {
   const id = request.params.id;
-  const food = await FoodModel.find({ _id: id });
+  const food = await FoodModel.find({ _id: id, email:request.user.email });
   response.status(200).json(food);
   console.log('getting a single Food...');
 };
 
-
 FoodHandlers.update = async (request, response) => {
   const { id } = request.params;
   try {
-    const food = await FoodModel.findOne({ _id: id });
+    const food = await FoodModel.findOne({ _id: id, email:request.user.email });
     if (!food) response.status(400).send('unable to update food');
     else {
-      const updatedFood = await FoodModel.findByIdAndUpdate(id, {...request.body}, { new: true, overwrite: false });
+      const updatedFood = await FoodModel.findByIdAndUpdate(id, {...request.body, email:request.user.email}, { new: true, overwrite: false });
       response.status(200).send(updatedFood);
     }
   } catch (e) {
@@ -47,7 +51,7 @@ FoodHandlers.update = async (request, response) => {
 
 FoodHandlers.delete = async (request, response) => {
   const id = request.params.id;
-  await FoodModel.deleteOne({ _id: id });
+  await FoodModel.deleteOne({ _id: id, email: request.user.email });
   console.log('deleting a Food...');
   response.status(200).send('Food deleted');
 };

@@ -1,25 +1,26 @@
 'use strict';
 
-require('dotenv').config();
 const mongoose = require('mongoose');
-mongoose.connect(process.env.DB_URL);
+require('dotenv').config();
 
-
+const Food = require('./models/food-model.js');
 
 async function seed() {
-  const Food = new Food({
-    name: 'Rice',
+  mongoose.connect(process.env.DB_URL);
+
+  const bannana = new Food({
+    name: 'bannana',
     carbs: 25,
     sugars: 22,
     protein: 3,
     fats: 1,
     calories: 300,
-    servingSize: '300'
+    servingSize: '300',
+    email: 'jamesdoyle202@gmail.com'
   });
-
-  Food.save(function (err) {
-    if (err) console.log(err);
-    else console.log('chicken to the mooooooooooooooon');
+  bannana.save(function (err) {
+    if (err) console.error(err);
+    else console.log('save hp1');
   });
 
 
