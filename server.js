@@ -79,7 +79,7 @@ app.put('/foodDB/:id', FoodHandlers.update);
 app.delete('/foodDB/:id', FoodHandlers.delete);
 
 app.post('/profile', ProfileHandlers.create);
-app.get('/profile/:id', ProfileHandlers.getOne);
+app.get('/profile', ProfileHandlers.getOne);
 app.put('/profile/:id', ProfileHandlers.update);
 app.delete('/profile/:id', ProfileHandlers.delete);
 

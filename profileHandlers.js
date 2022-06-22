@@ -14,7 +14,7 @@ ProfileHandlers.create = async (request, response, next) => {
 
 ProfileHandlers.getOne = async (request, response) => {
   const id = request.params.id;
-const profile = await ProfileModel.find({ _id: id, email:request.user.email });
+const profile = await ProfileModel.find({ email:request.user.email });
   response.status(200).json(profile);
   console.log('getting a single profile...');
 };
@@ -41,4 +41,3 @@ ProfileHandlers.update = async (request, response) => {
   };
 
 module.exports = ProfileHandlers;
-
