@@ -6,7 +6,7 @@ const express = require('express');
 const axios = require('axios');
 const verifyUser = require('./authorize.js');
 const FoodHandlers = require('./handlers');
-const RecipeHandlers = require('./handlers');
+// const RecipeHandlers = require('./handlers');
 const ProfileHandlers = require('./profileHandlers');
 
 const PORT = process.env.PORT || 3001;
@@ -54,6 +54,7 @@ class Food {
     this.servingSize = value.hints[0].measures.find(obj => obj.label === 'Serving').weight;
     this.image = value.hints[0].food.image;
     this.amountConsumed = 0;
+    // this.timestamp={};
   }
 }
 

@@ -10,7 +10,8 @@ const foodSchema = new mongoose.Schema({
   servingSize: Number,
   image: String,
   amountConsumed: Number,
-  email: String
+  email: String,
+  timestamp: Object
 });
 const FoodModel = mongoose.model('food', foodSchema);
 
