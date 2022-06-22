@@ -1,13 +1,13 @@
 'use strict';
-// const RecipeHandlers = {};
+
 const FoodHandlers = {};
 const FoodModel = require('./models/food-model');
-// const RecipeModel = require('./models/recipe-model');
+
 
 
 FoodHandlers.create = async (request, response, next) => {
-  console.log(request);
-  console.log(response);
+  console.log(request.user);
+  
 
   try {
     const data = request.body;
