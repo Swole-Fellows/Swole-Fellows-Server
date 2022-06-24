@@ -34,10 +34,7 @@ async function getFood(req) {
   const url = `https://api.edamam.com/api/food-database/v2/parser?app_id=a0001873&app_key=25bea95fd0ab0ce3e9788372c104698a&nutrition-type=logging&ingr=${search}`;
   try {
     const response = await axios.get(url);
-    console.log("response: ", response.data.hints[0]);
-
     const foodData = response.data.hints.map((value) => new Food(value));
-    console.log("new Food: ", foodData);
     return Promise.resolve(foodData);
   } catch (error) {
     console.error(error);
@@ -46,26 +43,31 @@ async function getFood(req) {
 
 class Food {
   constructor(value) {
-    this.foodName = value.food.label;
-    this.calories = value.food.nutrients.ENERC_KCAL;
-    this.fats = value.food.nutrients.FAT;
-    this.carbs = value.food.nutrients.CHOCDF;
-    this.protein = value.food.nutrients.PROCNT;
-    this.servingSize = value.measures[0].weight;
-    this.image = value.food.image;
-    this.amountConsumed = 0;
+ 
+    if (value.measures.filter(obj => obj.label === "Serving")[0]) {
+      this.foodName = value.food.label;
+      this.calories = value.food.nutrients.ENERC_KCAL;
+      this.fats = value.food.nutrients.FAT;
+      this.carbs = value.food.nutrients.CHOCDF;
+      this.protein = value.food.nutrients.PROCNT;
+      this.servingSize = value.measures.filter(obj => obj.label === "Serving")[0].weight;
+      this.image = value.food.image;
+      this.amountConsumed = 0;
+    }
+    else {
+      this.foodName = value.food.label;
+      this.calories = value.food.nutrients.ENERC_KCAL;
+      this.fats = value.food.nutrients.FAT;
+      this.carbs = value.food.nutrients.CHOCDF;
+      this.protein = value.food.nutrients.PROCNT;
+      this.servingSize = value.measures[0].weight;
+      this.image = value.food.image;
+      this.amountConsumed = 0;
+    }
   }
 }
 
-// class Profile {
-//   constructor(value){
-//     this.targetCal= {type: Number};
-//     this.currentWeight= {type: Number};
-//     this.dateOfBirth= {type: String};
-//     this.sex= {type: String};
-//     this.email= {type: String};
-//   }
-// }
+
 
 app.get("/food", (req, res) =>
   getFood(req).then((value) => res.status(200).send(value))
